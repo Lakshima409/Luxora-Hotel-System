@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Luxora Hotel Suite - Clerk Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c4b33; /* Deep emerald green */
+            --primary-light: #1a6b4a;
+            --primary-dark: #083023;
+            --secondary: #d4af37; /* Gold accent */
+            --light: #f8f5f2; /* Warm off-white */
+            --dark: #1a1a1a;
+            --radius: 6px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(12, 75, 51, 0.2), rgba(12, 75, 51, 0.2)), 
+                              url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transform: translateY(-20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(12, 75, 51, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 38px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 15px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(12, 75, 51, 0.2);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .forgot-password a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .login-footer a:hover {
+            color: var(--secondary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 0 15px;
+            }
+            
+            .login-header {
+                padding: 25px 20px;
+            }
+            
+            .login-body {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">Luxora<span>Hotel Suite</span></div>
+            <div class="login-subtitle">Clerk Login Portal</div>
+        </div>
+        <div class="login-body">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+        <div class="login-footer">
+            Having trouble? <a href="#">Contact administrator</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // In a real application, you would validate credentials with server here
+            // For demo purposes, we'll redirect after validation
+            window.location.href = 'dashboard.html';
+            
+            // For actual implementation, you might use:
+            /*
+            fetch('login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Invalid credentials');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Login failed. Please try again.');
+            });
+            */
+        });
+        
+        // Add animation when inputs are focused
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.querySelector('label').style.color = 'var(--secondary)';
+                this.parentNode.querySelector('.input-icon').style.color = 'var(--secondary)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentNode.querySelector('label').style.color = 'var(--primary)';
+                this.parentNode.querySelector('.input-icon').style.color = 'var(--primary)';
+            });
+        });
+    </script>
+</body>
+</html>

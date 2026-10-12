@@ -1,0 +1,45 @@
+# ============================================================
+#  Luxora Hotel Suite — .gitignore
+#  NEVER commit real credentials or local/machine-specific files.
+# ============================================================
+
+# --- SECRETS: real DB credentials (created by setup.php) ---
+db.local.php
+*.local.php
+.env
+.env.*
+!.env.example
+
+# --- OS / editor junk ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# --- Logs & runtime temp ---
+*.log
+logs/
+/tmp/
+cron_log.txt
+
+# --- Test / debug scratch (never commit harnesses) ---
+_*.php
+sdump.php
+final_check.php
+test_authcheck.php
+
+# --- Dependencies (none yet, but future-proof) ---
+/vendor/
+/node_modules/
+
+# --- Database dumps / backups ---
+*.sql.gz
+*.zip
+*.bak
+
+# --- Uploads generated at runtime ---
+/uploads/

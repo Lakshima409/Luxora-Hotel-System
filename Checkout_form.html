@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Luxora Hotel - Guest Checkout</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c4b33;
+            --primary-light: #1a6b4a;
+            --secondary: #d4af37;
+            --secondary-light: #e8c874;
+            --light: #f8f5f2;
+            --dark: #1a1a1a;
+            --gray: #6c757d;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --success: #28a745;
+            --radius: 4px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin: 25px 0 15px;
+            border-bottom: 2px solid var(--secondary-light);
+            padding-bottom: 8px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin: 20px 0 10px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: rgba(248, 245, 242, 0.5);
+            border-radius: var(--radius);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+        
+        input[readonly] {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        .error {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        th {
+            background-color: var(--primary-light);
+            color: white;
+            font-weight: 500;
+        }
+        
+        tr:hover {
+            background-color: rgba(12, 75, 51, 0.02);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-success {
+            background-color: #C8E6C9;
+            color: #388E3C;
+        }
+        
+        .badge-warning {
+            background-color: #FFECB3;
+            color: #FFA000;
+        }
+        
+        .badge-danger {
+            background-color: #FFCDD2;
+            color: #D32F2F;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .button-group-left, .button-group-right {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .summary-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-top: 20px;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .modal-content i {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-success i {
+            color: var(--success);
+        }
+        
+        .modal-warning i {
+            color: var(--warning);
+        }
+        
+        .modal-danger i {
+            color: var(--danger);
+        }
+        
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .confirmation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printSection, #printSection * {
+                visibility: visible;
+            }
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+        
+            .button-group-left, .button-group-right {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-sign-out-alt"></i> Guest Checkout</h1>
+        
+        <form id="checkoutForm" action="process_checkout.php" method="POST">
+            <!-- 1. Guest Selection -->
+            <div class="form-section">
+                <h2><i class="fas fa-user"></i> Guest Information</h2>
+                
+                <div class="form-group">
+                    <label for="guest_select">Select Guest</label>
+                    <select id="guest_select" name="guest_id" class="form-control" required>
+                        <option value="">-- Select Guest --</option>
+                        <!-- Options will be populated from database -->
+                    </select>
+                    <div class="error" id="guest_select_error"></div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="reservation_id">Reservation ID</label>
+                            <input type="text" id="reservation_id" name="reservation_id" readonly>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="guest_name">Guest Name</label>
+                            <input type="text" id="guest_name" name="guest_name" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="room_number">Room Number</label>
+                            <input type="text" id="room_number" name="room_number" readonly>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="room_type">Room Type</label>
+                            <select id="room_type" name="room_type" class="form-control" required>
+                                <option value="">-- Select Room Type --</option>
+                                <option value="single">Single</option>
+                                <option value="double">Double</option>
+                                <option value="family">Family</option>
+                                <option value="penthouse">Penthouse</option>
+                                <option value="honeymoon">Honeymoon</option>
+                                <option value="deluxe">Deluxe</option>
+                                <option value="suite">Suite</option>
+                                <option value="luxury">Luxury</option>
+                            </select>
+                            <div class="error" id="room_type_error"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2. Stay Information -->
+            <div class="form-section">
+                <h2><i class="fas fa-calendar-alt"></i> Stay Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="check_in_date">Check-In Date</label>
+                            <input type="date" id="check_in_date" name="check_in_date" readonly>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="expected_checkout_date">Expected Checkout Date</label>
+                            <input type="date" id="expected_checkout_date" name="expected_checkout_date" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="actual_checkout_date">Actual Checkout Date & Time</label>
+                    <input type="datetime-local" id="actual_checkout_date" name="actual_checkout_date" required>
+                    <div class="error" id="actual_checkout_date_error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="room_condition">Room Condition</label>
+                    <select id="room_condition" name="room_condition" required>
+                        <option value="">-- Select Condition --</option>
+                        <option value="excellent">Excellent (No issues)</option>
+                        <option value="good">Good (Minor wear)</option>
+                        <option value="damaged">Damaged (Requires maintenance)</option>
+                    </select>
+                    <div class="error" id="room_condition_error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="room_notes">Room Notes</label>
+                    <textarea id="room_notes" name="room_notes" rows="2" placeholder="Any special notes about room condition..."></textarea>
+                </div>
+            </div>
+            
+            <!-- 3. Services Used - Editable Section -->
+            <div class="form-section">
+                <h2><i class="fas fa-concierge-bell"></i> Services Used</h2>
+                
+                <table id="servicesTable">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th>Quantity</th>
+                            <th>Price (LKR)</th>
+                            <th>Total (LKR)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="servicesBody">
+                        <!-- Rows will be added here -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align: right; font-weight: bold;">Services Total:</td>
+                            <td style="font-weight: bold;" id="servicesTotal">LKR 0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+                <div class="form-row" style="margin-top: 20px;">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="new_service">Service</label>
+                            <select id="new_service" class="form-control">
+                                <option value="">-- Select Service --</option>
+                                <option value="room_service">Room Service</option>
+                                <option value="laundry">Laundry</option>
+                                <option value="minibar">Mini Bar</option>
+                                <option value="spa">Spa Treatment</option>
+                                <option value="transport">Airport Transport</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="new_service_date">Date</label>
+                            <input type="date" id="new_service_date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="new_service_quantity">Quantity</label>
+                            <input type="number" id="new_service_quantity" class="form-control" min="1" value="1">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="new_service_price">Price (LKR)</label>
+                            <input type="number" id="new_service_price" class="form-control" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-col" style="align-self: flex-end;">
+                        <button type="button" class="btn btn-primary" onclick="addService()">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 4. Room Charges -->
+            <div class="form-section">
+                <h2><i class="fas fa-bed"></i> Room Charges</h2>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="room_rate">Room Rate (per night)</label>
+                            <input type="number" id="room_rate" name="room_rate" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="nights_stayed">Nights Stayed</label>
+                            <input type="number" id="nights_stayed" name="nights_stayed" min="1" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="room_charges">Total Room Charges</label>
+                            <input type="number" id="room_charges" name="room_charges" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="room_discount">Discount (if any)</label>
+                    <input type="number" id="room_discount" name="room_discount" min="0" step="0.01" value="0">
+                </div>
+            </div>
+            
+            <!-- 5. Late Checkout Check -->
+            <div class="form-section" id="lateCheckoutSection" style="display: none;">
+                <h2><i class="fas fa-clock"></i> Late Checkout</h2>
+                
+                <div class="form-group">
+                    <label for="late_checkout_fee">Late Checkout Fee</label>
+                    <input type="number" id="late_checkout_fee" name="late_checkout_fee" min="0" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="late_checkout_reason">Reason for Late Checkout</label>
+                    <textarea id="late_checkout_reason" name="late_checkout_reason" rows="2"></textarea>
+                </div>
+            </div>
+            
+            <!-- 6. Tax Calculation -->
+            <div class="form-section">
+                <h2><i class="fas fa-calculator"></i> Tax Calculation</h2>
+                
+                <div class="form-group">
+                    <label for="tax_rate">Tax Rate (%)</label>
+                    <input type="number" id="tax_rate" name="tax_rate" min="0" max="100" step="0.01" value="10">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tax_amount">Tax Amount</label>
+                    <input type="number" id="tax_amount" name="tax_amount" readonly>
+                </div>
+            </div>
+            
+            <!-- 7. Payment Section -->
+            <div class="form-section">
+                <h2><i class="fas fa-credit-card"></i> Payment</h2>
+                
+                <div class="form-group" id="paymentMethodSection">
+                    <label for="payment_method">Payment Method</label>
+                    <select id="payment_method" name="payment_method" required>
+                        <option value="">-- Select Payment Method --</option>
+                        <option value="cash">Cash</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="split">Split Payment</option>
+                    </select>
+                    <div class="error" id="payment_method_error"></div>
+                </div>
+                
+                <div id="splitPaymentSection" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="split_method1">First Payment Method</label>
+                                <select id="split_method1" name="split_method1">
+                                    <option value="cash">Cash</option>
+                                    <option value="credit_card">Credit Card</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="split_amount1">Amount (LKR)</label>
+                                <input type="number" id="split_amount1" name="split_amount1" min="0" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="split_method2">Second Payment Method</label>
+                                <select id="split_method2" name="split_method2">
+                                    <option value="cash">Cash</option>
+                                    <option value="credit_card">Credit Card</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="split_amount2">Amount (LKR)</label>
+                                <input type="number" id="split_amount2" name="split_amount2" min="0" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment_notes">Payment Notes</label>
+                    <textarea id="payment_notes" name="payment_notes" rows="2"></textarea>
+                </div>
+            </div>
+            
+            <!-- 8. Final Summary -->
+            <div class="summary-card">
+                <h2><i class="fas fa-receipt"></i> Final Summary</h2>
+                
+                <div class="summary-row">
+                    <span>Room Charges:</span>
+                    <span id="summary_room_charges">LKR 0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Services:</span>
+                    <span id="summary_services">LKR 0.00</span>
+                </div>
+                
+                <div class="summary-row" id="summary_late_fee_row" style="display: none;">
+                    <span>Late Checkout Fee:</span>
+                    <span id="summary_late_fee">LKR 0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Discount:</span>
+                    <span id="summary_discount">LKR 0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="summary_subtotal">LKR 0.00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Tax (<span id="summary_tax_rate">10</span>%):</span>
+                    <span id="summary_tax">LKR 0.00</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Grand Total:</span>
+                    <span id="summary_total">LKR 0.00</span>
+                </div>
+            </div>
+            
+            <!-- 9. Hidden Inputs -->
+            <input type="hidden" id="is_travel_agency_guest" name="is_travel_agency_guest" value="0">
+            <input type="hidden" id="room_id" name="room_id">
+            <input type="hidden" id="total_amount" name="total_amount">
+            <input type="hidden" id="invoice_id" name="invoice_id" value="INV-2025-001">
+            
+            <!-- 10. Actions / Buttons -->
+            <div class="button-group">
+                <div class="button-group-left">
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+                <div class="button-group-right">
+                    <button type="button" class="btn btn-danger" id="cancelBtn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    
+                    <button type="button" class="btn btn-secondary" id="viewInvoiceBtn" style="display: none;">
+                        <i class="fas fa-file-invoice"></i> View Invoice
+                    </button>
+                    
+                    <button type="button" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-check"></i> Complete Checkout
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <i class="fas fa-check-circle modal-success"></i>
+            <h2>Confirm Checkout</h2>
+            <p>Please review the final bill before completing checkout.</p>
+            
+            <div style="text-align: left; margin: 20px 0;">
+                <div class="summary-row">
+                    <span>Guest:</span>
+                    <span id="confirm_guest_name">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Room:</span>
+                    <span id="confirm_room">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Charges:</span>
+                    <span id="confirm_total">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Payment Method:</span>
+                    <span id="confirm_payment">-</span>
+                </div>
+            </div>
+            
+            <div class="confirmation-buttons">
+                <button class="btn btn-secondary" id="editDetailsBtn">
+                    <i class="fas fa-edit"></i> Edit Details
+                </button>
+                <button class="btn btn-primary" id="confirmCheckoutBtn">
+                    <i class="fas fa-check"></i> Confirm Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <i class="fas fa-check-circle modal-success"></i>
+            <h2>Checkout Complete!</h2>
+            <p>The guest has been successfully checked out.</p>
+            <p>Invoice #<span id="success_invoice_id">INV-2025-001</span> has been generated.</p>
+            
+            <div class="confirmation-buttons">
+                <button class="btn btn-primary" id="printReceiptBtn">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+                <button class="btn btn-secondary" id="viewInvoiceModalBtn">
+                    <i class="fas fa-file-invoice"></i> View Invoice
+                </button>
+                <button class="btn btn-secondary" id="doneBtn">
+                    <i class="fas fa-check"></i> Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Modal -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <i class="fas fa-exclamation-triangle modal-warning"></i>
+            <h2>Cancel Checkout?</h2>
+            <p>Are you sure you want to cancel this checkout?</p>
+            <p>All entered information will be lost.</p>
+            
+            <div class="confirmation-buttons">
+                <button class="btn btn-secondary" id="goBackBtn">
+                    <i class="fas fa-arrow-left"></i> Go Back
+                </button>
+                <button class="btn btn-danger" id="confirmCancelBtn">
+                    <i class="fas fa-times"></i> Yes, Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Section (hidden) -->
+    <div id="printSection" style="display: none;">
+        <div style="max-width: 800px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="color: #0c4b33; margin-bottom: 5px;">Luxora Hotel</h1>
+                <p>123 Luxury Avenue, Colombo, Sri Lanka</p>
+                <p>Tel: +94 11 234 5678 | Email: info@luxorahotel.com</p>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <div>
+                    <h2 style="color: #0c4b33; border-bottom: 2px solid #d4af37; display: inline-block;">INVOICE</h2>
+                    <p><strong>Invoice #:</strong> <span id="print_invoice_id">INV-2025-001</span></p>
+                    <p><strong>Date:</strong> <span id="print_date">June 25, 2025</span></p>
+                </div>
+                <div style="text-align: right;">
+                    <p><strong>Guest:</strong> <span id="print_guest_name">John Smith</span></p>
+                    <p><strong>Room:</strong> <span id="print_room">201 (Deluxe)</span></p>
+                    <p><strong>Check-in:</strong> <span id="print_checkin">June 20, 2025</span></p>
+                    <p><strong>Check-out:</strong> <span id="print_checkout">June 25, 2025</span></p>
+                </div>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                <thead>
+                    <tr style="background-color: #0c4b33; color: white;">
+                        <th style="padding: 10px; text-align: left;">Description</th>
+                        <th style="padding: 10px; text-align: right;">Amount (LKR)</th>
+                    </tr>
+                </thead>
+                <tbody id="print_items">
+                    <!-- Items will be added here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="padding: 10px; text-align: right; font-weight: bold;">Subtotal:</td>
+                        <td style="padding: 10px; text-align: right; font-weight: bold;" id="print_subtotal">0.00</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; text-align: right; font-weight: bold;">Tax (<span id="print_tax_rate">10</span>%):</td>
+                        <td style="padding: 10px; text-align: right; font-weight: bold;" id="print_tax">0.00</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 1.1em;">Total:</td>
+                        <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 1.1em;" id="print_total">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div style="margin-top: 40px;">
+                <p><strong>Payment Method:</strong> <span id="print_payment_method">Credit Card</span></p>
+                <p><strong>Payment Status:</strong> Paid</p>
+            </div>
+            
+            <div style="margin-top: 50px; text-align: center; color: #666;">
+                <p>Thank you for staying with us at Luxora Hotel!</p>
+                <p>We hope to see you again soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for demonstration - simulating database
+        const guests = {
+            '101': {
+                name: 'John Smith',
+                reservation_id: 'RES-2025-101',
+                room_number: '201',
+                room_type: 'deluxe',
+                room_id: '201',
+                room_rate: 15000,
+                check_in: '2025-06-20',
+                expected_checkout: '2025-06-25',
+                is_travel_agency: false
+            },
+            '102': {
+                name: 'Sarah Johnson',
+                reservation_id: 'RES-2025-102',
+                room_number: '305',
+                room_type: 'suite',
+                room_id: '305',
+                room_rate: 25000,
+                check_in: '2025-06-22',
+                expected_checkout: '2025-06-27',
+                is_travel_agency: true
+            },
+            '103': {
+                name: 'Michael Brown',
+                reservation_id: 'RES-2025-103',
+                room_number: '102',
+                room_type: 'single',
+                room_id: '102',
+                room_rate: 10000,
+                check_in: '2025-06-23',
+                expected_checkout: '2025-06-28',
+                is_travel_agency: false
+            },
+            '104': {
+                name: 'Emily Davis',
+                reservation_id: 'RES-2025-104',
+                room_number: '501',
+                room_type: 'penthouse',
+                room_id: '501',
+                room_rate: 35000,
+                check_in: '2025-06-24',
+                expected_checkout: '2025-06-29',
+                is_travel_agency: false
+            },
+            '105': {
+                name: 'Robert Wilson',
+                reservation_id: 'RES-2025-105',
+                room_number: '302',
+                room_type: 'family',
+                room_id: '302',
+                room_rate: 22000,
+                check_in: '2025-06-25',
+                expected_checkout: '2025-06-30',
+                is_travel_agency: false
+            },
+            '106': {
+                name: 'Jessica Lee',
+                reservation_id: 'RES-2025-106',
+                room_number: '401',
+                room_type: 'honeymoon',
+                room_id: '401',
+                room_rate: 28000,
+                check_in: '2025-06-26',
+                expected_checkout: '2025-07-01',
+                is_travel_agency: false
+            },
+            '107': {
+                name: 'David Miller',
+                reservation_id: 'RES-2025-107',
+                room_number: '202',
+                room_type: 'double',
+                room_id: '202',
+                room_rate: 18000,
+                check_in: '2025-06-27',
+                expected_checkout: '2025-07-02',
+                is_travel_agency: true
+            },
+            '108': {
+                name: 'Jennifer Taylor',
+                reservation_id: 'RES-2025-108',
+                room_number: '601',
+                room_type: 'luxury',
+                room_id: '601',
+                room_rate: 40000,
+                check_in: '2025-06-28',
+                expected_checkout: '2025-07-03',
+                is_travel_agency: false
+            }
+        };
+
+        // Service prices
+        const servicePrices = {
+            'room_service': 1500,
+            'laundry': 2000,
+            'minibar': 3500,
+            'spa': 5000,
+            'transport': 3000
+        };
+
+        // Service names
+        const serviceNames = {
+            'room_service': 'Room Service',
+            'laundry': 'Laundry Service',
+            'minibar': 'Mini Bar Refill',
+            'spa': 'Spa Treatment',
+            'transport': 'Airport Transport'
+        };
+
+        // Room type display names
+        const roomTypeNames = {
+            'single': 'Single',
+            'double': 'Double',
+            'family': 'Family',
+            'penthouse': 'Penthouse',
+            'honeymoon': 'Honeymoon',
+            'deluxe': 'Deluxe',
+            'suite': 'Suite',
+            'luxury': 'Luxury'
+        };
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate guest dropdown from "database"
+            const guestSelect = document.getElementById('guest_select');
+            for (const [id, guest] of Object.entries(guests)) {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = `${guest.name} (Room ${guest.room_number} - ${roomTypeNames[guest.room_type]})`;
+                guestSelect.appendChild(option);
+            }
+
+            // Set default checkout datetime to now
+            const now = new Date();
+            const timezoneOffset = now.getTimezoneOffset() * 60000;
+            const localISOTime = new Date(now - timezoneOffset).toISOString().slice(0, 16);
+            document.getElementById('actual_checkout_date').value = localISOTime;
+            
+            // Set default service date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('new_service_date').value = today;
+            
+            // Event listeners for buttons
+            document.getElementById('submitBtn').addEventListener('click', showConfirmationModal);
+            document.getElementById('cancelBtn').addEventListener('click', showCancelModal);
+            document.getElementById('confirmCheckoutBtn').addEventListener('click', submitForm);
+            document.getElementById('editDetailsBtn').addEventListener('click', function() {
+                closeModal('confirmationModal');
+            });
+            document.getElementById('printReceiptBtn').addEventListener('click', printReceipt);
+            document.getElementById('viewInvoiceModalBtn').addEventListener('click', viewInvoice);
+            document.getElementById('viewInvoiceBtn').addEventListener('click', viewInvoice);
+            document.getElementById('doneBtn').addEventListener('click', function() {
+                closeModal('successModal');
+            });
+            document.getElementById('goBackBtn').addEventListener('click', function() {
+                closeModal('cancelModal');
+            });
+            document.getElementById('confirmCancelBtn').addEventListener('click', function() {
+                window.location.href = 'dashboard.html';
+            });
+            
+            // Close buttons for modals
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    modal.style.display = 'none';
+                });
+            });
+            
+            // Handle guest selection
+            document.getElementById('guest_select').addEventListener('change', function() {
+                const guestId = this.value;
+                if (guestId && guests[guestId]) {
+                    const guest = guests[guestId];
+                    
+                    // Fill guest info
+                    document.getElementById('reservation_id').value = guest.reservation_id;
+                    document.getElementById('guest_name').value = guest.name;
+                    document.getElementById('room_number').value = guest.room_number;
+                    document.getElementById('room_type').value = guest.room_type;
+                    document.getElementById('room_id').value = guest.room_id;
+                    document.getElementById('check_in_date').value = guest.check_in;
+                    document.getElementById('expected_checkout_date').value = guest.expected_checkout;
+                    document.getElementById('room_rate').value = guest.room_rate;
+                    document.getElementById('is_travel_agency_guest').value = guest.is_travel_agency ? '1' : '0';
+                    
+                    // Calculate nights stayed
+                    updateNightsStayed();
+                    
+                    // Handle travel agency guests
+                    if (guest.is_travel_agency) {
+                        document.getElementById('paymentMethodSection').style.display = 'none';
+                        document.getElementById('payment_method').value = 'travel_agency';
+                    } else {
+                        document.getElementById('paymentMethodSection').style.display = 'block';
+                    }
+                    
+                    // Generate a new invoice ID
+                    generateInvoiceId();
+                    
+                    // Update summary
+                    updateSummary();
+                } else {
+                    // Clear fields if no guest selected
+                    document.getElementById('reservation_id').value = '';
+                    document.getElementById('guest_name').value = '';
+                    document.getElementById('room_number').value = '';
+                    document.getElementById('room_type').value = '';
+                    document.getElementById('check_in_date').value = '';
+                    document.getElementById('expected_checkout_date').value = '';
+                    document.getElementById('room_rate').value = '';
+                    document.getElementById('nights_stayed').value = '';
+                    document.getElementById('room_charges').value = '';
+                    document.getElementById('lateCheckoutSection').style.display = 'none';
+                    document.getElementById('summary_late_fee_row').style.display = 'none';
+                }
+            });
+            
+            // Handle actual checkout date change
+            document.getElementById('actual_checkout_date').addEventListener('change', function() {
+                updateNightsStayed();
+                updateSummary();
+            });
+            
+            // Handle room rate and nights stayed changes
+            document.getElementById('room_rate').addEventListener('input', function() {
+                updateRoomCharges();
+                updateSummary();
+            });
+            
+            document.getElementById('nights_stayed').addEventListener('input', function() {
+                updateRoomCharges();
+                updateSummary();
+            });
+            
+            document.getElementById('room_discount').addEventListener('input', function() {
+                updateSummary();
+            });
+            
+            // Handle tax rate change
+            document.getElementById('tax_rate').addEventListener('input', function() {
+                updateSummary();
+            });
+            
+            // Handle payment method change
+            document.getElementById('payment_method').addEventListener('change', function() {
+                if (this.value === 'split') {
+                    document.getElementById('splitPaymentSection').style.display = 'block';
+                } else {
+                    document.getElementById('splitPaymentSection').style.display = 'none';
+                }
+            });
+            
+            // Handle service selection
+            document.getElementById('new_service').addEventListener('change', function() {
+                const service = this.value;
+                if (service && servicePrices[service]) {
+                    document.getElementById('new_service_price').value = servicePrices[service];
+                } else {
+                    document.getElementById('new_service_price').value = '';
+                }
+            });
+            
+            // Initialize summary
+            updateSummary();
+        });
+        
+        // Generate a random invoice ID
+        function generateInvoiceId() {
+            const randomNum = Math.floor(Math.random() * 900) + 100;
+            const invoiceId = `INV-${new Date().getFullYear()}-${randomNum}`;
+            document.getElementById('invoice_id').value = invoiceId;
+            return invoiceId;
+        }
+        
+        // Update nights stayed calculation
+        function updateNightsStayed() {
+            const guestId = document.getElementById('guest_select').value;
+            if (guestId && guests[guestId]) {
+                const guest = guests[guestId];
+                const checkInDate = new Date(guest.check_in);
+                const checkOutDate = new Date(document.getElementById('actual_checkout_date').value);
+                const nightsStayed = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+                document.getElementById('nights_stayed').value = nightsStayed;
+                
+                // Check for late checkout
+                const expectedCheckout = new Date(guest.expected_checkout + 'T12:00:00');
+                if (checkOutDate > expectedCheckout) {
+                    document.getElementById('lateCheckoutSection').style.display = 'block';
+                    document.getElementById('summary_late_fee_row').style.display = 'flex';
+                    
+                    const lateHours = Math.ceil((checkOutDate - expectedCheckout) / (1000 * 60 * 60));
+                    const lateFee = lateHours * 500; // 500 LKR per hour
+                    document.getElementById('late_checkout_fee').value = lateFee;
+                } else {
+                    document.getElementById('lateCheckoutSection').style.display = 'none';
+                    document.getElementById('summary_late_fee_row').style.display = 'none';
+                    document.getElementById('late_checkout_fee').value = '';
+                }
+                
+                updateRoomCharges();
+            }
+        }
+        
+        // Update room charges calculation
+        function updateRoomCharges() {
+            const roomRate = parseFloat(document.getElementById('room_rate').value) || 0;
+            const nightsStayed = parseInt(document.getElementById('nights_stayed').value) || 0;
+            const roomCharges = roomRate * nightsStayed;
+            document.getElementById('room_charges').value = roomCharges.toFixed(2);
+        }
+        
+        // Add a new service
+        function addService() {
+            const service = document.getElementById('new_service').value;
+            const serviceDate = document.getElementById('new_service_date').value;
+            const quantity = parseInt(document.getElementById('new_service_quantity').value) || 1;
+            const price = parseFloat(document.getElementById('new_service_price').value) || 0;
+            
+            if (!service) {
+                alert('Please select a service');
+                return;
+            }
+            
+            if (!serviceDate) {
+                alert('Please enter a service date');
+                return;
+            }
+            
+            if (price <= 0) {
+                alert('Please enter a valid price');
+                return;
+            }
+            
+            const total = price * quantity;
+            const serviceName = serviceNames[service] || service;
+            
+            // Add to services table
+            const tbody = document.getElementById('servicesBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${serviceName}</td>
+                <td>${serviceDate}</td>
+                <td>${quantity}</td>
+                <td>${price.toFixed(2)}</td>
+                <td>${total.toFixed(2)}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeService(this)"><i class="fas fa-trash"></i></button></td>
+            `;
+            tbody.appendChild(newRow);
+            
+            // Clear the form
+            document.getElementById('new_service').value = '';
+            document.getElementById('new_service_price').value = '';
+            document.getElementById('new_service_quantity').value = '1';
+            
+            // Update services total
+            updateServicesTotal();
+            updateSummary();
+        }
+        
+        // Remove a service
+        function removeService(button) {
+            const row = button.closest('tr');
+            row.remove();
+            updateServicesTotal();
+            updateSummary();
+        }
+        
+        // Update services total
+        function updateServicesTotal() {
+            let total = 0;
+            const rows = document.querySelectorAll('#servicesBody tr');
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 5) {
+                    const amount = parseFloat(cells[4].textContent) || 0;
+                    total += amount;
+                }
+            });
+            
+            document.getElementById('servicesTotal').textContent = 'LKR ' + total.toFixed(2);
+        }
+        
+        // Calculate total services amount
+        function getServicesTotal() {
+            let total = 0;
+            const rows = document.querySelectorAll('#servicesBody tr');
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 5) {
+                    const amount = parseFloat(cells[4].textContent) || 0;
+                    total += amount;
+                }
+            });
+            
+            return total;
+        }
+        
+        // Update summary calculations
+        function updateSummary() {
+            // Get values
+            const roomCharges = parseFloat(document.getElementById('room_charges').value) || 0;
+            const discount = parseFloat(document.getElementById('room_discount').value) || 0;
+            const servicesTotal = getServicesTotal();
+            const lateFee = parseFloat(document.getElementById('late_checkout_fee').value) || 0;
+            const taxRate = parseFloat(document.getElementById('tax_rate').value) || 0;
+            
+            // Calculate subtotal and tax
+            const subtotal = roomCharges + servicesTotal + lateFee - discount;
+            const tax = subtotal * (taxRate / 100);
+            const total = subtotal + tax;
+            
+            // Update summary display
+            document.getElementById('summary_room_charges').textContent = 'LKR ' + roomCharges.toFixed(2);
+            document.getElementById('summary_services').textContent = 'LKR ' + servicesTotal.toFixed(2);
+            document.getElementById('summary_late_fee').textContent = 'LKR ' + lateFee.toFixed(2);
+            document.getElementById('summary_discount').textContent = 'LKR ' + discount.toFixed(2);
+            document.getElementById('summary_subtotal').textContent = 'LKR ' + subtotal.toFixed(2);
+            document.getElementById('summary_tax_rate').textContent = taxRate;
+            document.getElementById('summary_tax').textContent = 'LKR ' + tax.toFixed(2);
+            document.getElementById('summary_total').textContent = 'LKR ' + total.toFixed(2);
+            
+            // Update tax field
+            document.getElementById('tax_amount').value = tax.toFixed(2);
+            
+            // Update hidden total amount
+            document.getElementById('total_amount').value = total.toFixed(2);
+        }
+        
+        // Show confirmation modal
+        function showConfirmationModal() {
+            // Validate form
+            if (!validateForm()) return;
+            
+            // Set confirmation details
+            document.getElementById('confirm_guest_name').textContent = document.getElementById('guest_name').value;
+            document.getElementById('confirm_room').textContent = document.getElementById('room_number').value + ' (' + roomTypeNames[document.getElementById('room_type').value] + ')';
+            document.getElementById('confirm_total').textContent = document.getElementById('summary_total').textContent;
+            
+            const paymentMethod = document.getElementById('payment_method').value;
+            if (paymentMethod === 'split') {
+                const method1 = document.getElementById('split_method1').value;
+                const amount1 = document.getElementById('split_amount1').value;
+                const method2 = document.getElementById('split_method2').value;
+                const amount2 = document.getElementById('split_amount2').value;
+                document.getElementById('confirm_payment').textContent = 'Split: ' + method1 + ' (LKR ' + amount1 + ') + ' + method2 + ' (LKR ' + amount2 + ')';
+            } else if (paymentMethod === 'travel_agency') {
+                document.getElementById('confirm_payment').textContent = 'Paid by Travel Agency';
+            } else {
+                document.getElementById('confirm_payment').textContent = paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1);
+            }
+            
+            // Show modal
+            document.getElementById('confirmationModal').style.display = 'block';
+        }
+        
+        // Validate form
+        function validateForm() {
+            let isValid = true;
+            
+            // Check required fields
+            const requiredFields = [
+                'guest_select', 'actual_checkout_date', 'room_condition', 'room_type'
+            ];
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(fieldId + '_error');
+                
+                if (!field.value) {
+                    errorElement.textContent = 'This field is required';
+                    isValid = false;
+                } else {
+                    errorElement.textContent = '';
+                }
+            });
+            
+            // Validate room rate and nights stayed
+            const roomRate = parseFloat(document.getElementById('room_rate').value);
+            if (isNaN(roomRate) || roomRate <= 0) {
+                alert('Please enter a valid room rate');
+                isValid = false;
+            }
+            
+            const nightsStayed = parseInt(document.getElementById('nights_stayed').value);
+            if (isNaN(nightsStayed) || nightsStayed <= 0) {
+                alert('Please enter a valid number of nights stayed');
+                isValid = false;
+            }
+            
+            // Validate payment method if not travel agency
+            if (document.getElementById('is_travel_agency_guest').value === '0') {
+                const paymentMethod = document.getElementById('payment_method');
+                const paymentError = document.getElementById('payment_method_error');
+                
+                if (!paymentMethod.value) {
+                    paymentError.textContent = 'Please select a payment method';
+                    isValid = false;
+                } else if (paymentMethod.value === 'split') {
+                    // Validate split payment amounts
+                    const amount1 = parseFloat(document.getElementById('split_amount1').value);
+                    const amount2 = parseFloat(document.getElementById('split_amount2').value);
+                    const total = parseFloat(document.getElementById('total_amount').value);
+                    
+                    if (isNaN(amount1)) {
+                        document.getElementById('split_amount1').style.borderColor = 'var(--danger)';
+                        isValid = false;
+                    } else {
+                        document.getElementById('split_amount1').style.borderColor = '';
+                    }
+                    
+                    if (isNaN(amount2)) {
+                        document.getElementById('split_amount2').style.borderColor = 'var(--danger)';
+                        isValid = false;
+                    } else {
+                        document.getElementById('split_amount2').style.borderColor = '';
+                    }
+                    
+                    if (isNaN(amount1) || isNaN(amount2) || Math.abs(amount1 + amount2 - total) > 0.01) {
+                        paymentError.textContent = 'Split amounts must add up to the total';
+                        isValid = false;
+                    } else {
+                        paymentError.textContent = '';
+                    }
+                } else {
+                    paymentError.textContent = '';
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // Submit form
+        function submitForm() {
+            // In a real application, this would submit the form
+            // document.getElementById('checkoutForm').submit();
+            
+            // For demo, show success modal
+            document.getElementById('confirmationModal').style.display = 'none';
+            
+            // Set success details
+            document.getElementById('success_invoice_id').textContent = document.getElementById('invoice_id').value;
+            document.getElementById('viewInvoiceBtn').style.display = 'inline-block';
+            
+            // Show success modal
+            document.getElementById('successModal').style.display = 'block';
+        }
+        
+        // View invoice
+        function viewInvoice() {
+            // Prepare print content
+            document.getElementById('print_invoice_id').textContent = document.getElementById('invoice_id').value;
+            document.getElementById('print_guest_name').textContent = document.getElementById('guest_name').value;
+            document.getElementById('print_room').textContent = document.getElementById('room_number').value + ' (' + roomTypeNames[document.getElementById('room_type').value] + ')';
+            
+            const checkInDate = new Date(document.getElementById('check_in_date').value);
+            const checkOutDate = new Date(document.getElementById('actual_checkout_date').value);
+            
+            document.getElementById('print_checkin').textContent = checkInDate.toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            
+            document.getElementById('print_checkout').textContent = checkOutDate.toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            
+            document.getElementById('print_date').textContent = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            
+            // Add items to print
+            const printItems = document.getElementById('print_items');
+            printItems.innerHTML = '';
+            
+            // Add room charges
+            const roomRow = document.createElement('tr');
+            roomRow.innerHTML = `
+                <td style="padding: 10px; border-bottom: 1px solid #eee;">Room Charges (${document.getElementById('nights_stayed').value} nights)</td>
+                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${parseFloat(document.getElementById('room_charges').value).toFixed(2)}</td>
+            `;
+            printItems.appendChild(roomRow);
+            
+            // Add services
+            const servicesRows = document.querySelectorAll('#servicesBody tr');
+            servicesRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 5) {
+                    const serviceRow = document.createElement('tr');
+                    serviceRow.innerHTML = `
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">${cells[0].textContent} (${cells[1].textContent})</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${cells[4].textContent}</td>
+                    `;
+                    printItems.appendChild(serviceRow);
+                }
+            });
+            
+            // Add late fee if applicable
+            const lateFee = parseFloat(document.getElementById('late_checkout_fee').value) || 0;
+            if (lateFee > 0) {
+                const lateRow = document.createElement('tr');
+                lateRow.innerHTML = `
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">Late Checkout Fee</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${lateFee.toFixed(2)}</td>
+                `;
+                printItems.appendChild(lateRow);
+            }
+            
+            // Add discount if applicable
+            const discount = parseFloat(document.getElementById('room_discount').value) || 0;
+            if (discount > 0) {
+                const discountRow = document.createElement('tr');
+                discountRow.innerHTML = `
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">Discount</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">-${discount.toFixed(2)}</td>
+                `;
+                printItems.appendChild(discountRow);
+            }
+            
+            // Set totals
+            document.getElementById('print_subtotal').textContent = (parseFloat(document.getElementById('room_charges').value) + getServicesTotal() + lateFee - discount).toFixed(2);
+            document.getElementById('print_tax_rate').textContent = document.getElementById('tax_rate').value;
+            document.getElementById('print_tax').textContent = document.getElementById('tax_amount').value;
+            document.getElementById('print_total').textContent = document.getElementById('total_amount').value;
+            
+            // Set payment method
+            const paymentMethod = document.getElementById('payment_method').value;
+            if (paymentMethod === 'split') {
+                document.getElementById('print_payment_method').textContent = 
+                    `Split: ${document.getElementById('split_method1').value} + ${document.getElementById('split_method2').value}`;
+            } else if (paymentMethod === 'travel_agency') {
+                document.getElementById('print_payment_method').textContent = 'Paid by Travel Agency';
+            } else {
+                document.getElementById('print_payment_method').textContent = 
+                    paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1);
+            }
+            
+            // Show the invoice in a new tab (simulated)
+            const printContent = document.getElementById('printSection').innerHTML;
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Invoice ${document.getElementById('invoice_id').value}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; color: #333; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th { background-color: #0c4b33; color: white; padding: 10px; text-align: left; }
+                        td { padding: 10px; border-bottom: 1px solid #ddd; }
+                        .total { font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    ${printContent}
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+        
+        // Print receipt
+        function printReceipt() {
+            // Prepare print content (same as viewInvoice)
+            viewInvoice();
+            
+            // In a real app, this would trigger the print dialog
+            // For demo, we'll just show an alert since we can't actually print in this environment
+            alert('Receipt is ready for printing. In a real application, this would open the print dialog.');
+            document.getElementById('successModal').style.display = 'none';
+        }
+        
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Show cancel modal
+        function showCancelModal() {
+            document.getElementById('cancelModal').style.display = 'block';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Luxora Hotel - CSV Export</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --luxora-gold: #d4af37;
+      --luxora-emerald: #0c4b33;
+      --luxora-ivory: #f8f5f2;
+      --luxora-moss: #1a6b4a;
+    }
+    
+    .export-header {
+      background: linear-gradient(135deg, rgba(12, 75, 51, 0.1) 0%, rgba(12, 75, 51, 0.05) 100%);
+      border-left: 4px solid var(--luxora-emerald);
+      border-radius: 8px;
+    }
+    
+    .preview-card {
+      border-radius: 12px;
+      border: 1px dashed rgba(12, 75, 51, 0.3);
+      background-color: rgba(248, 245, 242, 0.5);
+    }
+    
+    .data-table {
+      --bs-table-bg: transparent;
+      --bs-table-striped-bg: rgba(12, 75, 51, 0.03);
+      font-family: 'Roboto Mono', monospace;
+    }
+    
+    .data-table th {
+      background-color: var(--luxora-emerald);
+      color: white;
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .data-table td {
+      font-size: 0.85rem;
+      padding: 0.75rem;
+      vertical-align: middle;
+    }
+    
+    .badge-format {
+      background-color: rgba(212, 175, 55, 0.15);
+      color: var(--luxora-emerald);
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+    
+    .btn-export {
+      background-color: var(--luxora-gold);
+      color: var(--luxora-emerald);
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    .btn-export:hover {
+      background-color: #c19b2b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn-outline-emerald {
+      border: 1px solid var(--luxora-emerald);
+      color: var(--luxora-emerald);
+      background-color: transparent;
+    }
+    
+    .btn-outline-emerald:hover {
+      background-color: var(--luxora-emerald);
+      color: white;
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--luxora-emerald);
+      border-color: var(--luxora-emerald);
+    }
+    
+    .column-selector {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid rgba(12, 75, 51, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+    }
+    
+    .file-size {
+      color: var(--luxora-emerald);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body class="bg-luxora-ivory">
+  <div class="container py-4">
+    <!-- Header Section -->
+    <div class="export-header p-3 mb-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-0" style="color: var(--luxora-emerald);">
+            <i class="fas fa-file-csv me-2"></i>CSV Data Export
+          </h2>
+          <small class="text-muted">Export your data in comma-separated values format</small>
+        </div>
+        <div>
+          <a href="generate_reports.html" class="btn btn-outline-emerald me-2">
+            <i class="fas fa-arrow-left me-1"></i>Back to Reports
+          </a>
+          <button class="btn-export" id="startExport">
+            <i class="fas fa-download me-1"></i>Export Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row g-4">
+      <!-- Configuration Panel -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-white">
+            <h5 class="mb-0" style="color: var(--luxora-emerald);">
+              <i class="fas fa-cog me-2"></i>Export Settings
+            </h5>
+          </div>
+          <div class="card-body">
+            <form id="exportForm">
+              <div class="mb-4">
+                <label class="form-label fw-bold mb-3">Data Source</label>
+                <select class="form-select mb-3" id="dataSource">
+                  <option selected>Reservations</option>
+                  <option>Guest Information</option>
+                  <option>Room Inventory</option>
+                  <option>Billing Records</option>
+                  <option>Service Requests</option>
+                </select>
+                
+                <div class="mb-3">
+                  <label class="form-label">Date Range</label>
+                  <div class="input-group mb-2">
+                    <input type="date" class="form-control" id="startDate">
+                    <span class="input-group-text bg-transparent">to</span>
+                    <input type="date" class="form-control" id="endDate">
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="datePreset" id="today" checked>
+                    <label class="form-check-label" for="today">Today</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="datePreset" id="thisWeek">
+                    <label class="form-check-label" for="thisWeek">This Week</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="datePreset" id="thisMonth">
+                    <label class="form-check-label" for="thisMonth">This Month</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label fw-bold mb-3">Columns to Include</label>
+                <div class="column-selector">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-id" checked disabled>
+                    <label class="form-check-label" for="col-id">ID</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-guest" checked>
+                    <label class="form-check-label" for="col-guest">Guest Name</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-room" checked>
+                    <label class="form-check-label" for="col-room">Room Type</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-checkin" checked>
+                    <label class="form-check-label" for="col-checkin">Check-In Date</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-checkout" checked>
+                    <label class="form-check-label" for="col-checkout">Check-Out Date</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-status" checked>
+                    <label class="form-check-label" for="col-status">Status</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-revenue">
+                    <label class="form-check-label" for="col-revenue">Total Revenue</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-agent">
+                    <label class="form-check-label" for="col-agent">Booking Agent</label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="col-special">
+                    <label class="form-check-label" for="col-special">Special Requests</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-bold mb-3">File Options</label>
+                <div class="mb-3">
+                  <label class="form-label">File Name</label>
+                  <input type="text" class="form-control" value="luxora_export_<?php echo date('Ymd'); ?>">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Format</label>
+                  <div class="d-flex align-items-center">
+                    <span class="badge-format me-3">CSV UTF-8</span>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="fileFormat" id="formatCsv" checked>
+                      <label class="form-check-label" for="formatCsv">CSV</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="fileFormat" id="formatExcel">
+                      <label class="form-check-label" for="formatExcel">Excel</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Delimiter</label>
+                  <select class="form-select">
+                    <option selected>Comma ( , )</option>
+                    <option>Semicolon ( ; )</option>
+                    <option>Tab</option>
+                    <option>Pipe ( | )</option>
+                  </select>
+                </div>
+                <div class="form-check form-switch mb-3">
+                  <input class="form-check-input" type="checkbox" id="includeHeader" checked>
+                  <label class="form-check-label" for="includeHeader">Include column headers</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Preview Panel -->
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0" style="color: var(--luxora-emerald);">
+              <i class="fas fa-eye me-2"></i>Data Preview
+            </h5>
+            <div>
+              <span class="me-3"><span class="file-size">~2.4 MB</span> estimated file size</span>
+              <span class="badge bg-success bg-opacity-10 text-success">
+                <i class="fas fa-check-circle me-1"></i>1,248 records
+              </span>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="preview-card m-3 p-3">
+              <div class="alert alert-info mb-3">
+                <i class="fas fa-info-circle me-2"></i>Showing first 10 rows of filtered data
+              </div>
+              <div class="table-responsive">
+                <table class="table data-table table-hover mb-0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Guest Name</th>
+                      <th>Room Type</th>
+                      <th>Check-In</th>
+                      <th>Check-Out</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>RES-2023-0421</td>
+                      <td>John Smith</td>
+                      <td>Deluxe</td>
+                      <td>15 Jun 2023</td>
+                      <td>20 Jun 2023</td>
+                      <td><span class="badge bg-success bg-opacity-10 text-success">Checked Out</span></td>
+                    </tr>
+                    <tr>
+                      <td>RES-2023-0422</td>
+                      <td>Sarah Johnson</td>
+                      <td>Executive Suite</td>
+                      <td>16 Jun 2023</td>
+                      <td>22 Jun 2023</td>
+                      <td><span class="badge bg-success bg-opacity-10 text-success">Checked Out</span></td>
+                    </tr>
+                    <!-- More preview rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- Export Summary -->
+            <div class="p-4">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="mb-3" style="color: var(--luxora-emerald);">
+                    <i class="fas fa-info-circle me-2"></i>Export Summary
+                  </h6>
+                  <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-database me-2 text-muted"></i> <strong>1,248</strong> records selected</li>
+                    <li class="mb-2"><i class="fas fa-table me-2 text-muted"></i> <strong>6</strong> columns included</li>
+                    <li class="mb-2"><i class="fas fa-calendar-alt me-2 text-muted"></i> Date range: <strong>Jun 1 - Jun 30, 2023</strong></li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="mb-3" style="color: var(--luxora-emerald);">
+                    <i class="fas fa-history me-2"></i>Recent Exports
+                  </h6>
+                  <ul class="list-unstyled">
+                    <li class="mb-2">
+                      <i class="fas fa-file-csv me-2 text-muted"></i> 
+                      <a href="#" class="text-decoration-none">reservations_20230615.csv</a>
+                      <small class="text-muted">(2.1 MB)</small>
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-file-csv me-2 text-muted"></i> 
+                      <a href="#" class="text-decoration-none">guests_20230610.csv</a>
+                      <small class="text-muted">(1.7 MB)</small>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: var(--luxora-emerald); color: white;">
+          <h5 class="modal-title"><i class="fas fa-file-export me-2"></i>Export in Progress</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="spinner-border text-luxora-emerald mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5 class="mb-2">Preparing your export file</h5>
+          <p class="text-muted">Processing 1,248 records...</p>
+          <div class="progress mb-3">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 45%; background-color: var(--luxora-emerald);"></div>
+          </div>
+          <small class="text-muted">This may take a few moments for large datasets</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('startExport').addEventListener('click', function() {
+      var exportModal = new bootstrap.Modal(document.getElementById('exportModal'));
+      exportModal.show();
+      
+      // Simulate export process
+      setTimeout(function() {
+        window.location.href = "download_export.php?file=reservations_export.csv";
+      }, 3000);
+    });
+    
+    // Update preview when options change
+    document.querySelectorAll('#exportForm input, #exportForm select').forEach(function(element) {
+      element.addEventListener('change', function() {
+        // In a real app, this would fetch new preview data
+        console.log("Updating preview based on new settings...");
+      });
+    });
+  </script>
+</body>
+</html>

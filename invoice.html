@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Luxora Hotel Suite - Guest Invoice</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c4b33;
+            --primary-light: #1a6b4a;
+            --primary-dark: #083023;
+            --secondary: #d4af37;
+            --secondary-light: #e8c874;
+            --secondary-dark: #b38f2b;
+            --dark: #1a1a1a;
+            --light: #f8f5f2;
+            --gray: #6c757d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --radius: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Main Content */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        /* Invoice Styles */
+        .invoice-container {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .invoice-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .invoice-header p {
+            color: var(--gray);
+        }
+
+        .invoice-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-item h4 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            font-weight: 500;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .invoice-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .invoice-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .invoice-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .total-section {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .total-label {
+            width: 200px;
+            font-weight: 600;
+        }
+
+        .total-amount {
+            width: 150px;
+            font-weight: 600;
+        }
+
+        .grand-total {
+            font-size: 20px;
+            color: var(--primary);
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid var(--primary);
+        }
+
+        .invoice-footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .invoice-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .btn-lg {
+            padding: 12px 24px;
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .invoice-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .invoice-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="dashboard.html" class="logo">Luxora<span>Hotel Suite</span></a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <span>John Doe (Clerk)</span>
+                </div>
+                <a href="logout.php" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Guest Invoice</h1>
+        </div>
+
+        <!-- Invoice -->
+        <div class="invoice-container">
+            <div class="invoice-header">
+                <h1>Luxora Hotel Suite</h1>
+                <p>123 Harbor Street, Seaview City | Phone: +1 (555) 123-4567</p>
+                <h2 style="margin-top: 20px;">INVOICE</h2>
+                <p>Invoice #<span id="invoiceNumber">INV-2025-1025</span> | Date: <span id="invoiceDate">June 20, 2025</span></p>
+            </div>
+            
+            <div class="invoice-info">
+                <div class="info-section">
+                    <h3>Guest Information</h3>
+                    <div class="info-item">
+                        <h4>Guest Name</h4>
+                        <p id="guestName">Michael Johnson</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Address</h4>
+                        <p>123 Main Street, Anytown, USA</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Phone</h4>
+                        <p>(555) 123-4567</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Email</h4>
+                        <p>michael.johnson@example.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Reservation Details</h3>
+                    <div class="info-item">
+                        <h4>Reservation ID</h4>
+                        <p>RES-1025</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Room Number</h4>
+                        <p id="roomNumber">305 - Deluxe Room</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Check-In Date</h4>
+                        <p id="checkInDate">June 15, 2025</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Check-Out Date</h4>
+                        <p id="checkOutDate">June 20, 2025</p>
+                    </div>
+                </div>
+            </div>
+            
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th class="text-right">Unit Price</th>
+                        <th class="text-right">Quantity</th>
+                        <th class="text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceItems">
+                    <!-- Items will be populated by JavaScript -->
+                </tbody>
+            </table>
+            
+            <div class="total-section">
+                <div class="total-line">
+                    <div class="total-label">Subtotal:</div>
+                    <div class="total-amount" id="subtotalAmount">$747.50</div>
+                </div>
+                <div class="total-line">
+                    <div class="total-label">Tax (<span id="taxRate">10</span>%):</div>
+                    <div class="total-amount" id="taxAmount">$74.75</div>
+                </div>
+                <div class="total-line">
+                    <div class="total-label">Deposit Paid:</div>
+                    <div class="total-amount" id="depositAmount">-$200.00</div>
+                </div>
+                <div class="total-line grand-total">
+                    <div class="total-label">TOTAL DUE:</div>
+                    <div class="total-amount" id="totalDue">$622.25</div>
+                </div>
+            </div>
+            
+            <div class="invoice-footer">
+                <p>Thank you for staying with us! We hope to see you again soon.</p>
+                <p>Payment due upon receipt. Please make checks payable to Luxora Hotel Suite.</p>
+            </div>
+            
+            <div class="invoice-actions">
+                <button class="btn btn-secondary btn-lg" id="printInvoice"><i class="fas fa-print"></i> Print Invoice</button>
+                <button class="btn btn-lg" id="processPayment"><i class="fas fa-credit-card"></i> Process Payment</button>
+                <button class="btn btn-secondary btn-lg" id="emailInvoice"><i class="fas fa-envelope"></i> Email Invoice</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get reservation data from sessionStorage
+            const reservationData = JSON.parse(sessionStorage.getItem('reservationData'));
+            
+            if (reservationData) {
+                // Update invoice header information
+                document.getElementById('invoiceNumber').textContent = reservationData.invoiceNumber;
+                document.getElementById('invoiceDate').textContent = reservationData.invoiceDate;
+                
+                // Update guest information
+                document.getElementById('guestName').textContent = reservationData.guestName;
+                document.getElementById('roomNumber').textContent = reservationData.roomNumber;
+                document.getElementById('checkInDate').textContent = reservationData.checkInDate;
+                document.getElementById('checkOutDate').textContent = reservationData.checkOutDate;
+                
+                // Calculate totals
+                let subtotal = 0;
+                const invoiceItems = document.getElementById('invoiceItems');
+                
+                // Add room charges
+                reservationData.roomCharges.forEach(charge => {
+                    const amount = charge.unitPrice * charge.quantity;
+                    subtotal += amount;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${charge.description}</td>
+                        <td class="text-right">$${charge.unitPrice.toFixed(2)}</td>
+                        <td class="text-right">${charge.quantity}</td>
+                        <td class="text-right">$${amount.toFixed(2)}</td>
+                    `;
+                    invoiceItems.appendChild(row);
+                });
+                
+                // Add additional charges
+                reservationData.additionalCharges.forEach(charge => {
+                    subtotal += charge.amount;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${charge.description}</td>
+                        <td class="text-right">$${charge.amount.toFixed(2)}</td>
+                        <td class="text-right">1</td>
+                        <td class="text-right">$${charge.amount.toFixed(2)}</td>
+                    `;
+                    invoiceItems.appendChild(row);
+                });
+                
+                const tax = subtotal * reservationData.taxRate;
+                const totalDue = subtotal + tax - reservationData.depositPaid;
+                
+                // Update totals in the invoice
+                document.getElementById('subtotalAmount').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('taxRate').textContent = (reservationData.taxRate * 100);
+                document.getElementById('taxAmount').textContent = `$${tax.toFixed(2)}`;
+                document.getElementById('depositAmount').textContent = `-$${reservationData.depositPaid.toFixed(2)}`;
+                document.getElementById('totalDue').textContent = `$${totalDue.toFixed(2)}`;
+            }
+            
+            // Add event listeners for buttons
+            document.getElementById('printInvoice').addEventListener('click', function() {
+                window.print();
+            });
+            
+            document.getElementById('processPayment').addEventListener('click', function() {
+                alert('Payment processed successfully!');
+                // In a real application, this would connect to a payment processor
+            });
+            
+            document.getElementById('emailInvoice').addEventListener('click', function() {
+                alert('Invoice has been sent to the guest\'s email!');
+                // In a real application, this would send an email
+            });
+        });
+    </script>
+</body>
+</html>

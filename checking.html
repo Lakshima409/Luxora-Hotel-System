@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Luxora Hotel Suite - Guest Check-In</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c4b33;
+            --primary-light: #1a6b4a;
+            --primary-dark: #083023;
+            --secondary: #d4af37;
+            --secondary-light: #e8c874;
+            --secondary-dark: #b38f2b;
+            --dark: #1a1a1a;
+            --light: #f8f5f2;
+            --gray: #6c757d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --radius: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Main Content */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        /* Check-In Form */
+        .checkin-container {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title i {
+            color: var(--secondary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(12, 75, 51, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        /* Guest Search */
+        .guest-search {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .search-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="dashboard.html" class="logo">Luxora<span>Hotel Suite</span></a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <span>John Doe (Clerk)</span>
+                </div>
+                <a href="logout.php" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Guest Check-In</h1>
+        </div>
+
+        <!-- Guest Search -->
+        <div class="guest-search">
+            <div class="search-header">
+                <div class="search-title">Find Reservation</div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Reservation ID or Guest Name">
+                    <button class="btn">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Check-In Form -->
+        <div class="checkin-container">
+            <div class="form-header">
+                <h2 class="form-title"><i class="fas fa-user-plus"></i> Guest Information</h2>
+            </div>
+            
+            <form id="checkinForm" action="process_checkin.php" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reservationId">Reservation ID</label>
+                        <input type="text" id="reservationId" name="reservationId" class="form-control" placeholder="Enter reservation ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkinDate">Check-In Date</label>
+                        <input type="date" id="checkinDate" name="checkinDate" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter last name">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter phone number">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="idType">ID Type</label>
+                        <select id="idType" name="idType" class="form-control">
+                            <option value="">Select ID Type</option>
+                            <option value="passport">Passport</option>
+                            <option value="drivers_license">Driver's License</option>
+                            <option value="national_id">National ID</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="idNumber">ID Number</label>
+                        <input type="text" id="idNumber" name="idNumber" class="form-control" placeholder="Enter ID number">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomType">Room Type</label>
+                        <select id="roomType" name="roomType" class="form-control">
+                            <option value="">Select Room Type</option>
+                            <option value="deluxe">Deluxe Room</option>
+                            <option value="luxury">Luxury Suite</option>
+                            <option value="executive">Executive Suite</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomNumber">Room Number</label>
+                        <select id="roomNumber" name="roomNumber" class="form-control">
+                            <option value="">Select Room Number</option>
+                            <option value="305">305</option>
+                            <option value="306">306</option>
+                            <option value="307">307</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specialRequests">Special Requests</label>
+                    <textarea id="specialRequests" name="specialRequests" class="form-control" rows="3" placeholder="Enter any special requests"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn">Complete Check-In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('checkinForm').addEventListener('submit', function(e) {
+            // Basic validation example
+            const firstName = document.getElementById('firstName').value;
+            if (!firstName) {
+                alert('Please enter the guest\'s first name');
+                e.preventDefault();
+                return;
+            }
+            
+            // Form will submit normally if validation passes
+            alert('Check-in completed successfully!');
+        });
+
+        // Clear form when cancel button is clicked
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            document.getElementById('checkinForm').reset();
+        });
+    </script>
+</body>
+</html>

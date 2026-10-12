@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Luxora Hotel Suite - Guest Check-Out</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c4b33;
+            --primary-light: #1a6b4a;
+            --primary-dark: #083023;
+            --secondary: #d4af37;
+            --secondary-light: #e8c874;
+            --secondary-dark: #b38f2b;
+            --dark: #1a1a1a;
+            --light: #f8f5f2;
+            --gray: #6c757d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --radius: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Main Content */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        /* Check-Out Form */
+        .checkout-container {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-title i {
+            color: var(--secondary);
+        }
+
+        .guest-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: rgba(12, 75, 51, 0.05);
+            border-radius: var(--radius);
+        }
+
+        .info-item h4 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(12, 75, 51, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        /* Charges Table */
+        .charges-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .charges-table th {
+            background-color: var(--primary-light);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .charges-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .charges-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="dashboard.html" class="logo">Luxora<span>Hotel Suite</span></a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <span>John Doe (Clerk)</span>
+                </div>
+                <a href="logout.php" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Guest Check-Out</h1>
+        </div>
+
+        <!-- Check-Out Form -->
+        <div class="checkout-container">
+            <div class="form-header">
+                <h2 class="form-title"><i class="fas fa-sign-out-alt"></i> Guest Check-Out Details</h2>
+            </div>
+            
+            <!-- Guest Information -->
+            <div class="guest-info">
+                <div class="info-item">
+                    <h4>Guest Name</h4>
+                    <p>Michael Johnson</p>
+                </div>
+                <div class="info-item">
+                    <h4>Room Number</h4>
+                    <p>305 - Deluxe Room</p>
+                </div>
+                <div class="info-item">
+                    <h4>Check-In Date</h4>
+                    <p>June 15, 2025</p>
+                </div>
+                <div class="info-item">
+                    <h4>Check-Out Date</h4>
+                    <p>June 20, 2025</p>
+                </div>
+            </div>
+            
+            <form id="checkoutForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkoutDate">Check-Out Date & Time</label>
+                        <input type="datetime-local" id="checkoutDate" class="form-control" value="2025-06-20T12:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomCondition">Room Condition</label>
+                        <select id="roomCondition" class="form-control">
+                            <option>Excellent - No issues</option>
+                            <option>Good - Minor issues</option>
+                            <option>Damaged - Needs repair</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="conditionNotes">Condition Notes</label>
+                    <textarea id="conditionNotes" class="form-control" rows="2">Room in excellent condition</textarea>
+                </div>
+                
+                <h3 style="margin: 25px 0 15px; color: var(--primary);">Additional Charges</h3>
+                
+                <table class="charges-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mini Bar Consumption</td>
+                            <td class="text-right">$28.50</td>
+                        </tr>
+                        <tr>
+                            <td>Late Check-Out Fee</td>
+                            <td class="text-right">$50.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Additional Charges</strong></td>
+                            <td class="text-right"><strong>$78.50</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="viewInvoiceBtn">View Invoice</button>
+                    <button type="submit" class="btn">Process Check-Out</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // View Invoice button functionality
+        document.getElementById('viewInvoiceBtn').addEventListener('click', function() {
+            // Get the current reservation details (in a real app, these would come from your database)
+            const reservationDetails = {
+                guestName: 'Michael Johnson',
+                roomNumber: '305 - Deluxe Room',
+                checkInDate: 'June 15, 2025',
+                checkOutDate: 'June 20, 2025',
+                additionalCharges: [
+                    { description: 'Mini Bar Consumption', amount: 28.50 },
+                    { description: 'Late Check-Out Fee', amount: 50.00 }
+                ],
+                roomCharges: [
+                    { description: 'Deluxe Room (5 nights)', unitPrice: 120.00, quantity: 5 },
+                    { description: 'Room Service', unitPrice: 15.00, quantity: 3 },
+                    { description: 'Laundry Service', unitPrice: 12.00, quantity: 2 }
+                ],
+                depositPaid: 200.00,
+                taxRate: 0.10,
+                invoiceNumber: 'INV-2025-1025',
+                invoiceDate: 'June 20, 2025'
+            };
+
+            // Store the data in sessionStorage to pass to the invoice page
+            sessionStorage.setItem('reservationData', JSON.stringify(reservationDetails));
+            
+            // Open the invoice page in a new tab
+            window.open('invoice.html', '_blank');
+        });
+
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const checkoutData = {
+                checkoutDateTime: document.getElementById('checkoutDate').value,
+                roomCondition: document.getElementById('roomCondition').value,
+                conditionNotes: document.getElementById('conditionNotes').value
+            };
+            
+            // In a real application, this would submit to the server
+            alert('Check-out processed successfully! Invoice generated.');
+            
+            // Then redirect to invoice page or open it in a new tab
+            document.getElementById('viewInvoiceBtn').click();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Luxora Hotel - Report Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --luxora-gold: #d4af37;
+      --luxora-emerald: #0c4b33;
+      --luxora-ivory: #f8f5f2;
+    }
+    
+    .report-card {
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      background: white;
+      height: 100%;
+    }
+    
+    .report-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(12, 75, 51, 0.15);
+    }
+    
+    .report-card .card-header {
+      background: linear-gradient(135deg, var(--luxora-emerald) 0%, #1a6b4a 100%);
+      color: white;
+      border-bottom: none;
+      padding: 1.5rem;
+    }
+    
+    .report-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: var(--luxora-emerald);
+      background-color: rgba(212, 175, 55, 0.15);
+      font-size: 1.5rem;
+    }
+    
+    .nav-pills-luxora .nav-link {
+      color: var(--luxora-emerald);
+      border-radius: 8px;
+      margin-right: 0.5rem;
+    }
+    
+    .nav-pills-luxora .nav-link.active {
+      background-color: var(--luxora-emerald);
+      color: white;
+    }
+    
+    .form-control-luxora {
+      border: 1px solid rgba(12, 75, 51, 0.2);
+      border-radius: 8px;
+    }
+    
+    .form-control-luxora:focus {
+      border-color: var(--luxora-emerald);
+      box-shadow: 0 0 0 0.25rem rgba(12, 75, 51, 0.25);
+    }
+    
+    .btn-generate {
+      background-color: var(--luxora-gold);
+      color: var(--luxora-emerald);
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    .btn-generate:hover {
+      background-color: #c19b2b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-luxora-ivory">
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-5 fw-bold mb-3" style="color: var(--luxora-emerald);">
+          <i class="fas fa-file-alt me-2"></i>Reports
+        </h1>
+        <p class="lead text-muted">Create custom business intelligence reports with our powerful generator</p>
+      </div>
+    </div>
+
+    <!-- Report Type Tabs -->
+    <ul class="nav nav-pills nav-pills-luxora mb-5 justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="pill" href="#performance">
+          <i class="fas fa-chart-line me-2"></i>Performance
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#financial">
+          <i class="fas fa-coins me-2"></i>Financial
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#operational">
+          <i class="fas fa-cogs me-2"></i>Operational
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#custom">
+          <i class="fas fa-sliders-h me-2"></i>Custom
+        </a>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Performance Reports -->
+      <div class="tab-pane fade show active" id="performance">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="report-card card">
+              <div class="card-header">
+                <div class="report-icon mx-auto">
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <h5 class="card-title text-center mb-0">Occupancy Analysis</h5>
+              </div>
+              <div class="card-body">
+                <form action="generate_report.php" method="post">
+                  <input type="hidden" name="report_type" value="occupancy">
+                  <div class="mb-3">
+                    <label class="form-label">Date Range</label>
+                    <div class="input-group mb-3">
+                      <input type="date" class="form-control form-control-luxora" name="start_date">
+                      <span class="input-group-text bg-transparent">to</span>
+                      <input type="date" class="form-control form-control-luxora" name="end_date">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Granularity</label>
+                    <select class="form-select form-control-luxora" name="granularity">
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Room Types</label>
+                    <select class="form-select form-control-luxora" name="room_types" multiple>
+                      <option value="all" selected>All Room Types</option>
+                      <option value="deluxe">Deluxe</option>
+                      <option value="executive">Executive</option>
+                      <option value="family">Family</option>
+                      <option value="premium">Premium</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-generate w-100 mt-3">
+                    <i class="fas fa-magic me-2"></i>Generate Report
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional performance report cards -->
+        </div>
+      </div>
+      
+      <!-- Other tab panes (Financial, Operational, Custom) -->
+    </div>
+
+    <!-- Recent Reports Section -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white">
+            <h5 class="mb-0" style="color: var(--luxora-emerald);">
+              <i class="fas fa-history me-2"></i>Recently Generated Reports
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>Report Name</th>
+                    <th>Type</th>
+                    <th>Date Range</th>
+                    <th>Generated On</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>June Occupancy Analysis</td>
+                    <td><span class="badge" style="background-color: rgba(12, 75, 51, 0.1); color: var(--luxora-emerald);">Performance</span></td>
+                    <td>Jun 1 - Jun 30, 2023</td>
+                    <td>Jul 2, 2023 10:45 AM</td>
+                    <td><span class="badge bg-success bg-opacity-10 text-success">Ready</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-luxora-emerald">
+                          <i class="fas fa-download"></i>
+                        </button>
+                        <button class="btn btn-outline-luxora-emerald">
+                          <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="btn btn-outline-luxora-emerald">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- More recent reports -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

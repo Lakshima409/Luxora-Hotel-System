@@ -1,0 +1,17 @@
+<?php
+/**
+ * db.local.php.example  —  COPY THIS FILE TO `db.local.php` and fill in YOUR details.
+ *
+ * db.php loads db.local.php automatically if it exists, and these values
+ * OVERRIDE the defaults in db.php. This file is SAFE to commit (it has no
+ * real credentials). The real `db.local.php` is git-ignored on purpose.
+ *
+ * On XAMPP the database is usually MariaDB on port 3307 with user "root"
+ * and an empty password. On a standalone MySQL install it's often port 3306.
+ */
+
+$host   = 'localhost';
+$port   = '3307';                 // XAMPP MariaDB = 3307, MySQL 8 = 3306
+$dbname = 'hotel_management';
+$username = 'root';
+$password = '';                    // <-- put YOUR real password here in db.local.php

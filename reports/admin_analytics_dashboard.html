@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Luxora Hotel - Executive Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <style>
+    :root {
+      --luxora-gold: #d4af37;
+      --luxora-emerald: #0c4b33;
+      --luxora-ivory: #f8f5f2;
+      --luxora-charcoal: #1a1a1a;
+      --luxora-moss: #1a6b4a;
+    }
+    
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--luxora-emerald) 0%, var(--luxora-moss) 100%);
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(12, 75, 51, 0.2);
+    }
+    
+    .metric-card {
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--luxora-gold);
+    }
+    
+    .metric-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .chart-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    
+    .progress-thin {
+      height: 6px;
+      border-radius: 3px;
+    }
+    
+    .trend-indicator {
+      font-size: 0.9rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+    
+    .up-trend {
+      background: rgba(40, 167, 69, 0.15);
+      color: #28a745;
+    }
+    
+    .down-trend {
+      background: rgba(220, 53, 69, 0.15);
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body class="bg-luxora-ivory">
+  <div class="container-fluid py-4">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header p-4 mb-4">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-1"><i class="fas fa-chart-pie me-2"></i>Executive Dashboard</h1>
+          <p class="mb-0 opacity-75">Real-time performance metrics & analytics</p>
+        </div>
+        <div class="col-md-4 text-end">
+          <div class="dropdown">
+            <button class="btn btn-luxora-gold dropdown-toggle" type="button" id="timeRangeDropdown" data-bs-toggle="dropdown">
+              <i class="far fa-calendar-alt me-2"></i>Last 30 Days
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+              <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+              <li><a class="dropdown-item" href="#">Last Quarter</a></li>
+              <li><a class="dropdown-item" href="#">Custom Range</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row g-4 mb-4">
+      <div class="col-xl-3 col-md-6">
+        <div class="metric-card card h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="card-title text-uppercase text-muted mb-0">Occupancy Rate</h6>
+              <i class="fas fa-bed text-luxora-gold fs-4"></i>
+            </div>
+            <h2 class="mb-2" style="color: var(--luxora-emerald);">87.5%</h2>
+            <div class="d-flex align-items-center">
+              <span class="trend-indicator up-trend me-2">
+                <i class="fas fa-caret-up me-1"></i>5.2%
+              </span>
+              <small class="text-muted">vs previous period</small>
+            </div>
+            <div class="progress progress-thin mt-3">
+              <div class="progress-bar bg-luxora-emerald" style="width: 87.5%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Additional metric cards (Revenue, ADR, RevPAR) -->
+    </div>
+
+    <!-- Main Charts -->
+    <div class="row g-4 mb-4">
+      <div class="col-lg-8">
+        <div class="chart-container p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0" style="color: var(--luxora-emerald);">
+              <i class="fas fa-chart-line me-2"></i>Revenue Trend
+            </h5>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-luxora-emerald active">Daily</button>
+              <button class="btn btn-outline-luxora-emerald">Weekly</button>
+              <button class="btn btn-outline-luxora-emerald">Monthly</button>
+            </div>
+          </div>
+          <div id="revenueTrendChart" style="height: 300px;"></div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="chart-container p-4 h-100">
+          <h5 class="mb-3" style="color: var(--luxora-emerald);">
+            <i class="fas fa-chart-pie me-2"></i>Market Segment
+          </h5>
+          <div id="marketSegmentChart" style="height: 300px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Row -->
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="chart-container p-4 h-100">
+          <h5 class="mb-3" style="color: var(--luxora-emerald);">
+            <i class="fas fa-star me-2"></i>Room Type Performance
+          </h5>
+          <canvas id="roomPerformanceChart" height="250"></canvas>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="chart-container p-4 h-100">
+          <h5 class="mb-3" style="color: var(--luxora-emerald);">
+            <i class="fas fa-calendar-check me-2"></i>Booking Pace
+          </h5>
+          <div id="bookingPaceChart" style="height: 250px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Revenue Trend Chart (ApexCharts)
+    var revenueOptions = {
+      series: [{
+        name: "Revenue",
+        data: [ /* API data would go here */ ]
+      }],
+      chart: {
+        type: 'area',
+        height: '100%',
+        toolbar: { show: true },
+        zoom: { enabled: true }
+      },
+      colors: ['#0c4b33'],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.3,
+        }
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 2 },
+      xaxis: { type: 'datetime' },
+      tooltip: { x: { format: 'dd MMM yyyy' } }
+    };
+    var revenueChart = new ApexCharts(document.querySelector("#revenueTrendChart"), revenueOptions);
+    revenueChart.render();
+
+    // Room Performance Chart (Chart.js)
+    new Chart(document.getElementById("roomPerformanceChart"), {
+      type: 'bar',
+      data: {
+        labels: ["Deluxe", "Executive", "Family", "Premium"],
+        datasets: [{
+          label: "ADR (LKR)",
+          data: [25000, 35000, 18000, 42000],
+          backgroundColor: [
+            'rgba(12, 75, 51, 0.7)',
+            'rgba(26, 107, 74, 0.7)',
+            'rgba(212, 175, 55, 0.7)',
+            'rgba(8, 48, 35, 0.7)'
+          ],
+          borderColor: [
+            'rgba(12, 75, 51, 1)',
+            'rgba(26, 107, 74, 1)',
+            'rgba(212, 175, 55, 1)',
+            'rgba(8, 48, 35, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return 'LKR ' + context.raw.toLocaleString();
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return 'LKR ' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

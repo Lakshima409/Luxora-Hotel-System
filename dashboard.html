@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Luxora Hotel Suite - Clerk Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== Global Styles ===== */
+        :root {
+            --primary: #0c4b33; /* Deep emerald green */
+            --primary-light: #1a6b4a;
+            --primary-dark: #083023;
+            --secondary: #d4af37; /* Gold accent */
+            --secondary-light: #e8c874;
+            --secondary-dark: #b38f2b;
+            --dark: #1a1a1a;
+            --light: #f8f5f2; /* Warm off-white */
+            --gray: #6c757d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --radius: 4px;
+            --section-padding: 100px 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* ===== Dashboard Layout ===== */
+        .dashboard {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 30px 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 5px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .menu-link:hover, .menu-link.active {
+            color: var(--primary);
+            background-color: rgba(12, 75, 51, 0.05);
+            border-left: 3px solid var(--secondary);
+        }
+
+        .menu-link i {
+            margin-right: 10px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+        }
+
+        /* ===== Dashboard Cards ===== */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-card .change {
+            font-size: 14px;
+            color: #4CAF50;
+        }
+
+        .stat-card .change.negative {
+            color: #f44336;
+        }
+
+        /* ===== Today's Arrivals/Departures ===== */
+        .arrivals-departures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--secondary);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .status-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .status-table th {
+            background-color: var(--primary-light);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .status-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .status-table tr:hover {
+            background-color: rgba(12, 75, 51, 0.02);
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background-color: #C8E6C9;
+            color: #388E3C;
+        }
+
+        .badge-warning {
+            background-color: #FFECB3;
+            color: #FFA000;
+        }
+
+        .badge-danger {
+            background-color: #FFCDD2;
+            color: #D32F2F;
+        }
+
+        /* ===== Quick Actions ===== */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border-top: 3px solid var(--secondary);
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-card i {
+            font-size: 24px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .action-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* ===== Room Status Overview ===== */
+        .room-status {
+            margin-top: 30px;
+        }
+
+        .room-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .room-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .room-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .room-table tr:hover {
+            background-color: rgba(12, 75, 51, 0.02);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-available {
+            background-color: #4CAF50;
+        }
+
+        .status-occupied {
+            background-color: #F44336;
+        }
+
+        .status-reserved {
+            background-color: #FF9800;
+        }
+
+        .status-maintenance {
+            background-color: #9E9E9E;
+        }
+
+        /* ===== Billing Page Styles ===== */
+        .billing-container {
+            padding: 40px 0;
+        }
+
+        .billing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .billing-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .billing-table th {
+            background-color: var(--primary-light);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .billing-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .billing-table tr:hover {
+            background-color: rgba(12, 75, 51, 0.02);
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .badge-paid {
+            background-color: #C8E6C9;
+            color: #388E3C;
+        }
+
+        .badge-pending {
+            background-color: #FFECB3;
+            color: #FFA000;
+        }
+
+        .badge-cancelled {
+            background-color: #FFCDD2;
+            color: #D32F2F;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        /* ===== Responsive Styles ===== */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .arrivals-departures {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 15px 0;
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                padding: 0 15px;
+            }
+            
+            .menu-item {
+                margin-bottom: 0;
+                margin-right: 10px;
+                white-space: nowrap;
+            }
+            
+            .menu-link {
+                padding: 10px 15px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .menu-link:hover, .menu-link.active {
+                border-left: none;
+                border-bottom: 3px solid var(--secondary);
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .billing-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="dashboard.html" class="logo">Luxora<span>Hotel suite</span> <small>(Clerk)</small></a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <span>John Doe (Clerk)</span>
+                </div>
+                <a href="logout.php" class="btn btn-secondary btn-sm">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="menu-item"><a href="dashboard.html" class="menu-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="menu-item"><a href="reservations/auto_cancel_cron.php" class="menu-link"><i class="fas fa-calendar-check"></i> Reservations</a></li>
+                <li class="menu-item"><a href="checking.html" class="menu-link"><i class="fas fa-sign-in-alt"></i> Check-in</a></li>
+                <li class="menu-item"><a href="Checkout_form.html" class="menu-link"><i class="fas fa-sign-out-alt"></i> Check-out</a></li>
+                <li class="menu-item"><a href="#billing" class="menu-link" id="billing-link"><i class="fas fa-credit-card"></i> Payments</a></li>
+                <li class="menu-item"><a href="reports/generate_reports.html" class="menu-link"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li class="menu-item"><a href="export_reservations.php" class="menu-link"><i class="fas fa-file-export"></i> Export Reservations</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard View -->
+            <div id="dashboard-view">
+                <div class="page-header">
+                    <h1 class="page-title">Clerk Dashboard</h1>
+                    <div>
+                        <button class="btn btn-sm"><i class="fas fa-calendar-alt"></i> June 20, 2025</button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <h3>Today's Check-ins</h3>
+                        <div class="value">5</div>
+                        <div class="change positive"><i class="fas fa-arrow-up"></i> 1 from yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Today's Check-outs</h3>
+                        <div class="value">3</div>
+                        <div class="change negative"><i class="fas fa-arrow-down"></i> 2 from yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Available Rooms</h3>
+                        <div class="value">12</div>
+                        <div class="change positive"><i class="fas fa-arrow-up"></i> 3 from yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pending Reservations</h3>
+                        <div class="value">2</div>
+                        <div class="change negative"><i class="fas fa-arrow-down"></i> 1 from yesterday</div>
+                    </div>
+                </div>
+
+                <!-- Today's Arrivals and Departures -->
+                <div class="arrivals-departures">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-user-clock"></i> Today's Arrivals</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="status-table">
+                                <thead>
+                                    <tr>
+                                        <th>Guest</th>
+                                        <th>Room</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Smith</td>
+                                        <td>201 (Deluxe)</td>
+                                        <td>2:00 PM</td>
+                                        <td><span class="status-badge badge-success">Checked-In</span></td>
+                                        <td><a href="checking.html?guest=John Smith&room=201" class="btn btn-secondary btn-sm">Details</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sarah Johnson</td>
+                                        <td>305 (Suite)</td>
+                                        <td>3:30 PM</td>
+                                        <td><span class="status-badge badge-warning">Pending</span></td>
+                                        <td><a href="checking.html?guest=Sarah Johnson&room=305" class="btn btn-secondary btn-sm">Check-In</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Michael Brown</td>
+                                        <td>102 (Standard)</td>
+                                        <td>4:15 PM</td>
+                                        <td><span class="status-badge badge-danger">No-Show</span></td>
+                                        <td><a href="checking.html?guest=Michael Brown&room=102" class="btn btn-secondary btn-sm">Follow Up</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-user-check"></i> Today's Departures</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="status-table">
+                                <thead>
+                                    <tr>
+                                        <th>Guest</th>
+                                        <th>Room</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Robert Wilson</td>
+                                        <td>208 (Deluxe)</td>
+                                        <td>11:00 AM</td>
+                                        <td><span class="status-badge badge-success">Checked-Out</span></td>
+                                        <td><a href="invoice.html?guest=Robert Wilson&room=208" class="btn btn-secondary btn-sm">Invoice</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emily Davis</td>
+                                        <td>312 (Suite)</td>
+                                        <td>12:30 PM</td>
+                                        <td><span class="status-badge badge-warning">Checked-In</span></td>
+                                        <td><a href="checkout.html?guest=Emily Davis&room=312" class="btn btn-secondary btn-sm">Check-Out</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="quick-actions">
+                            <a href="reservations/auto_cancel_cron.php" class="action-card">
+                                <i class="fas fa-plus"></i>
+                                <h3>New Reservation</h3>
+                            </a>
+                            <a href="checking.html" class="action-card">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <h3>Check-In Guest</h3>
+                            </a>
+                            <a href="checkout_form.php" class="action-card">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <h3>Check-Out Guest</h3>
+                            </a>
+                            <a href="#billing" class="action-card" id="quick-billing-link">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <h3>Create Bill</h3>
+                            </a>
+                            <a href="export_reservations.php" class="action-card">
+                                <i class="fas fa-file-export"></i>
+                                <h3>Export Reservations</h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Status Overview -->
+                <div class="card room-status">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-bed"></i> Room Status Overview</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="room-table">
+                            <thead>
+                                <tr>
+                                    <th>Room No.</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Guest</th>
+                                    <th>Check-Out</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>101</td>
+                                    <td>Standard</td>
+                                    <td><span class="status-indicator status-available"></span>Available</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="checking.html?room=101" class="btn btn-secondary btn-sm">Check-In</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>102</td>
+                                    <td>Standard</td>
+                                    <td><span class="status-indicator status-occupied"></span>Occupied</td>
+                                    <td>Michael Brown</td>
+                                    <td>Jun 22, 2025</td>
+                                    <td>
+                                        <a href="checkout.html?room=102&guest=Michael Brown" class="btn btn-secondary btn-sm">Check-Out</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>201</td>
+                                    <td>Deluxe</td>
+                                    <td><span class="status-indicator status-occupied"></span>Occupied</td>
+                                    <td>John Smith</td>
+                                    <td>Jun 25, 2025</td>
+                                    <td>
+                                        <a href="checkout.html?room=201&guest=John Smith" class="btn btn-secondary btn-sm">Check-Out</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>208</td>
+                                    <td>Deluxe</td>
+                                    <td><span class="status-indicator status-available"></span>Available</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="checking.html?room=208" class="btn btn-secondary btn-sm">Check-In</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>305</td>
+                                    <td>Suite</td>
+                                    <td><span class="status-indicator status-reserved"></span>Reserved</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>Jun 23, 2025</td>
+                                    <td>
+                                        <a href="reservations/auto_cancel_cron.php?room=305" class="btn btn-secondary btn-sm">Details</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing View (hidden by default) -->
+            <div id="billing-view" style="display: none;">
+                <div class="billing-header">
+                    <h1 class="page-title">Billing Management</h1>
+                    <div>
+                        <button class="btn btn-sm"><i class="fas fa-calendar-alt"></i> June 20, 2025</button>
+                    </div>
+                </div>
+
+                <!-- Billing Actions -->
+                <div class="billing-card">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                        <a href="billing/bill_generator.php" class="btn">
+                            <i class="fas fa-file-invoice"></i> Generate Bill
+                        </a>
+                        <a href="billing/service_charges.php" class="btn btn-secondary">
+                            <i class="fas fa-plus-circle"></i> Add Services
+                        </a>
+                        <a href="billing/receipt.php" class="btn">
+                            <i class="fas fa-receipt"></i> View Receipts
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Bills -->
+                <div class="billing-card">
+                    <h2><i class="fas fa-history"></i> Recent Bills</h2>
+                    <div class="table-responsive">
+                        <table class="billing-table">
+                            <thead>
+                                <tr>
+                                    <th>Bill #</th>
+                                    <th>Guest</th>
+                                    <th>Room</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-20250620-001</td>
+                                    <td>John Smith</td>
+                                    <td>201 (Deluxe)</td>
+                                    <td>Jun 20, 2025</td>
+                                    <td>LKR 25,750.00</td>
+                                    <td><span class="status-badge badge-paid">Paid</span></td>
+                                    <td><a href="billing/receipt.php?id=1001" class="btn btn-secondary btn-sm">View</a></td>
+                                </tr>
+                                <tr>
+                                    <td>INV-20250619-002</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>305 (Suite)</td>
+                                    <td>Jun 19, 2025</td>
+                                    <td>LKR 32,450.00</td>
+                                    <td><span class="status-badge badge-paid">Paid</span></td>
+                                    <td><a href="billing/receipt.php?id=1002" class="btn btn-secondary btn-sm">View</a></td>
+                                </tr>
+                                <tr>
+                                    <td>INV-20250618-003</td>
+                                    <td>Michael Brown</td>
+                                    <td>102 (Standard)</td>
+                                    <td>Jun 18, 2025</td>
+                                    <td>LKR 18,900.00</td>
+                                    <td><span class="status-badge badge-pending">Pending</span></td>
+                                    <td><a href="billing/receipt.php?id=1003" class="btn btn-secondary btn-sm">View</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bill Generator Preview -->
+                <div class="billing-card">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> Generate New Bill</h2>
+                    <form id="billForm">
+                        <div class="form-group">
+                            <label class="form-label">Select Guest</label>
+                            <select class="form-control" required>
+                                <option value="">-- Select Guest --</option>
+                                <option value="1001">John Smith (Room 201 - Deluxe)</option>
+                                <option value="1002">Sarah Johnson (Room 305 - Suite)</option>
+                                <option value="1003">Michael Brown (Room 102 - Standard)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Additional Services</label>
+                            <div style="margin-bottom: 10px;">
+                                <input type="checkbox" id="service1" name="services[]" value="laundry">
+                                <label for="service1">Laundry Service (LKR 1,500.00)</label>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <input type="checkbox" id="service2" name="services[]" value="minibar">
+                                <label for="service2">Mini Bar (LKR 3,200.00)</label>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <input type="checkbox" id="service3" name="services[]" value="spa">
+                                <label for="service3">Spa Treatment (LKR 5,000.00)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Special Notes</label>
+                            <textarea class="form-control" rows="3" placeholder="Any special instructions..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn">
+                            <i class="fas fa-file-invoice"></i> Generate Bill
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Bill Summary Preview -->
+                <div class="billing-card">
+                    <h2><i class="fas fa-receipt"></i> Bill Preview</h2>
+                    <div style="background-color: #f9f9f9; padding: 20px; border-radius: var(--radius);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <div>
+                                <h3 style="color: var(--primary);">Luxora Hotel</h3>
+                                <p>123 Luxury Avenue, Colombo</p>
+                                <p>Tel: +94 11 234 5678</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <h3 style="color: var(--primary);">INVOICE</h3>
+                                <p><strong>Date:</strong> Jun 20, 2025</p>
+                                <p><strong>Invoice #:</strong> INV-20250620-004</p>
+                            </div>
+                        </div>
+
+                        <hr style="margin: 20px 0; border-color: #eee;">
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <div>
+                                <p><strong>Guest:</strong> John Smith</p>
+                                <p><strong>Room:</strong> 201 (Deluxe)</p>
+                            </div>
+                            <div>
+                                <p><strong>Check-in:</strong> Jun 18, 2025</p>
+                                <p><strong>Check-out:</strong> Jun 21, 2025</p>
+                            </div>
+                        </div>
+
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                            <thead>
+                                <tr style="background-color: var(--primary-light); color: white;">
+                                    <th style="padding: 10px 15px; text-align: left;">Description</th>
+                                    <th style="padding: 10px 15px; text-align: right;">Amount (LKR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px 15px; border-bottom: 1px solid #eee;">Room Charge (3 nights)</td>
+                                    <td style="padding: 10px 15px; border-bottom: 1px solid #eee; text-align: right;">18,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 15px; border-bottom: 1px solid #eee;">Laundry Service</td>
+                                    <td style="padding: 10px 15px; border-bottom: 1px solid #eee; text-align: right;">1,500.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 15px; border-bottom: 1px solid #eee;">Mini Bar</td>
+                                    <td style="padding: 10px 15px; border-bottom: 1px solid #eee; text-align: right;">3,200.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 15px;">Tax (10%)</td>
+                                    <td style="padding: 10px 15px; text-align: right;">2,270.00</td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: rgba(212, 175, 55, 0.1);">
+                                    <td style="padding: 10px 15px;">TOTAL</td>
+                                    <td style="padding: 10px 15px; text-align: right;">24,970.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="text-align: center; margin-top: 30px; color: var(--gray);">
+                            <p>Thank you for choosing Luxora Hotel. We hope to see you again!</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-edit"></i> Edit Bill
+                        </button>
+                        <button class="btn">
+                            <i class="fas fa-print"></i> Print Bill
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Back to Dashboard Button -->
+                <div style="text-align: right; margin-top: 20px;">
+                    <a href="#dashboard" class="btn btn-secondary" id="back-to-dashboard">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to handle active menu items
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get current page URL
+            const currentUrl = window.location.pathname.split('/').pop();
+            
+            // Highlight active menu item
+            const menuLinks = document.querySelectorAll('.menu-link');
+            menuLinks.forEach(link => {
+                const linkUrl = link.getAttribute('href').split('/').pop();
+                if (currentUrl === linkUrl) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Handle all action buttons
+            document.querySelectorAll('a.btn, .action-card').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // For demonstration, prevent actual navigation
+                    if (this.getAttribute('href') === 'export_reservations.php') {
+                        // Special handling for export - allow it to proceed
+                        return;
+                    }
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    alert(`Navigating to: ${href}`);
+                    // In production, uncomment next line:
+                    // window.location.href = href;
+                });
+            });
+
+            // Handle billing navigation
+            const billingLink = document.getElementById('billing-link');
+            const quickBillingLink = document.getElementById('quick-billing-link');
+            const backToDashboard = document.getElementById('back-to-dashboard');
+            const dashboardView = document.getElementById('dashboard-view');
+            const billingView = document.getElementById('billing-view');
+
+            function showBillingView() {
+                dashboardView.style.display = 'none';
+                billingView.style.display = 'block';
+                // Update active menu item
+                document.querySelectorAll('.menu-link').forEach(link => link.classList.remove('active'));
+                billingLink.classList.add('active');
+            }
+
+            function showDashboardView() {
+                dashboardView.style.display = 'block';
+                billingView.style.display = 'none';
+                // Update active menu item
+                document.querySelectorAll('.menu-link').forEach(link => link.classList.remove('active'));
+                document.querySelector('.menu-link[href="dashboard.html"]').classList.add('active');
+            }
+
+            // Check URL hash on load
+            if (window.location.hash === '#billing') {
+                showBillingView();
+            }
+
+            // Handle billing link clicks
+            billingLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showBillingView();
+                window.history.pushState(null, null, '#billing');
+            });
+
+            quickBillingLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showBillingView();
+                window.history.pushState(null, null, '#billing');
+            });
+
+            backToDashboard.addEventListener('click', function(e) {
+                e.preventDefault();
+                showDashboardView();
+                window.history.pushState(null, null, '#dashboard');
+            });
+
+            // Handle browser back/forward buttons
+            window.addEventListener('popstate', function() {
+                if (window.location.hash === '#billing') {
+                    showBillingView();
+                } else {
+                    showDashboardView();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
