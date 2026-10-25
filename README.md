@@ -15,22 +15,22 @@ This is a QloApps-inspired hotel management system module built using:
 
 ---
 
-## 📂 Folder Structure Overview
+📂 Folder Structure Overview
 
-├── checkin/ # Guest check-in interface
-├── checkout/ # Guest checkout, express checkout
-├── billing/ # Billing modules and utils
-├── includes/ # Shared header, footer, auth, db
-├── assets/ # CSS, JS, images, fonts
-├── dashboard/ # Clerk dashboard
-├── cronjobs/ # Scheduled tasks
-├── reservations/ # Auto cancel / no-show handlers
-├── logs/ # Clerk action logs
-├── middleware/ # Hidden rule enforcement
-├── auth/ # login/logout
-├── database/ # schema.sql
-├── lang/ # Language support
-├── index.php # Role-based dashboard redirect
+├── checkin/ Guest check-in interface
+├── checkout/ Guest checkout, express checkout
+├── billing/ Billing modules and utils
+├── includes/  Shared header, footer, auth, db
+├── assets/ CSS, JS, images, fonts
+├── dashboard/ Clerk dashboard
+├── cronjobs/ Scheduled tasks
+├── reservations/ Auto cancel / no-show handlers
+├── logs/ Clerk action logs
+├── middleware/ Hidden rule enforcement
+├── auth/ login/logout
+├── database/ schema.sql
+├── lang/ Language support
+├── index.php Role-based dashboard redirect
 └── README.md
 ---
 
