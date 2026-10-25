@@ -3,11 +3,11 @@
 date_default_timezone_set('Asia/Colombo');
 mb_internal_encoding('UTF-8');
 
-ini_set('display_errors', 1);
+ini_set('display_errors', getenv('APP_DEBUG') ? 1 : 0);
 error_reporting(E_ALL);
 
 define('HOTEL_NAME', 'Luxora Hotel Suite');
-define('BASE_URL', 'http://localhost/hotel-system');
+define('BASE_URL', getenv('BASE_URL') ?: 'http://localhost/hotel-system');
 define('ADMIN_EMAIL', 'admin@luxorahotel.com');
 define('CURRENCY', 'LKR');
 define('TAX_RATE', 0.10);

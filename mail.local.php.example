@@ -1,0 +1,19 @@
+﻿<?php
+/**
+ * mail.local.php.example  --  COPY THIS FILE TO `mail.local.php` and fill in YOUR details.
+ *
+ * verifycode.php reads these values (or the matching environment variables) to send
+ * OTP emails. This example file is SAFE to commit (no real credentials).
+ * The real `mail.local.php` is git-ignored on purpose (*.local.php).
+ *
+ * Environment variables (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM,
+ * SMTP_FROM_NAME, SMTP_SECURE) take precedence over the values below.
+ */
+
+$smtp_host      = 'smtp.gmail.com';
+$smtp_port      = 587;
+$smtp_user      = '';                 // <-- your SMTP username (e.g. Gmail address)
+$smtp_pass      = '';                 // <-- your SMTP app password
+$smtp_from      = '';                 // <-- sender address (defaults to $smtp_user)
+$smtp_from_name = 'Hotel Booking';
+$smtp_secure    = 'tls';              // 'tls' (STARTTLS) or 'ssl'

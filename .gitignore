@@ -43,3 +43,6 @@ test_authcheck.php
 
 # --- Uploads generated at runtime ---
 /uploads/
+
+# --- Personal/private notes (never publish) ---
+INTERVIEW_PREP*.md

@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
                 </div>
                 <div class="forgot-password">
-                    <a href="resetpassword.html">Forgot password?</a>
+                    <a href="resetpassword.php">Forgot password?</a>
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <p style="margin-top:10px;font-size:12px;opacity:.8">Demo: clerk1/12345 · manager1/manager123 · admin1/admin123</p>
